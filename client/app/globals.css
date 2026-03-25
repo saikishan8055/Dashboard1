@@ -14,7 +14,7 @@ html,
 body {
   height: 100%;
   width: 100%;
-  @apply text-sm bg-gray-500 text-gray-900;
+  @apply text-sm bg-gray-500 ;
 }
 /* @import "tailwindcss";
 
