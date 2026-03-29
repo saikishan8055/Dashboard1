@@ -1,18 +1,30 @@
 "use client";
 
-import { useAppSelector } from "@/app/redux";
-import { setIsSidebarCollapsed } from "@/app/state";
-import { Bell, Menu, Sun, Search, Settings } from "lucide-react";
+import { useAppSelector,useAppDispatch } from "@/app/redux";
+import { setIsDarkMode, setIsSidebarCollapsed } from "@/app/state";
+import { Bell, Menu, Sun, Search, Settings, Moon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
-import { useDispatch } from "react-redux";
+import {useEffect,React} from "react";
 
 const Navbar = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isSiderbarCollasped = useAppSelector((state) => state.global.isSidebarCollapsed)
-  const togglebar =()=>{
+ 
+  const isDarkMode = useAppSelector((state)=>state.global.isDarkMode)
+   const togglebar =()=>{
     dispatch(setIsSidebarCollapsed(!isSiderbarCollasped))
   } 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
+  const toggleDarkmode =()=>{
+    dispatch(setIsDarkMode(!isDarkMode))
+
+  }
   return (
     <div className="flex justify-between items-center w-full mb-8">
       <div className="flex items-center gap-5">
@@ -25,7 +37,7 @@ const Navbar = () => {
         <input
           type="search"
           placeholder="start type to search groups & products"
-          className="pl-10 pr-4 py-2 w-[200px] md:w-80 border-2 bg-white rounded-lg focus:outline-none focus:border-blue-500"
+          className="pl-10 pr-4 py-2 w-[200px] md:w-60 border-2 bg-white rounded-lg focus:outline-none focus:border-blue-500"
         />
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Bell className="text-gray-500" size={20} />
@@ -36,8 +48,10 @@ const Navbar = () => {
       <div className="flex items-center gap-5">
         <div className="hidden md:flex items-center gap-5">
           <div>
-          <button>
-            <Sun className="cursor-pointer text-gray-500" size={24} />
+          <button onClick={toggleDarkmode}>
+            {isDarkMode ?(<Sun className="cursor-pointer text-gray-500" size={24} />
+):(            <Moon className="cursor-pointer text-gray-500" size={24} />
+)}
           </button>
         </div>
 
